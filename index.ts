@@ -11,7 +11,7 @@ async function main() {
 	try {
 		await AppDataSource.initialize();
 
-		app.use('/api/products', productRouter);
+		app.use('/api', productRouter);
 
 		app.listen(port, () => {
 			console.log(`Server in port ${port}`);

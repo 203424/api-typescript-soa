@@ -1,7 +1,10 @@
-import express from "express";
+import { Router } from 'express';
 
-import { productController } from "./dependencies";
+import { productController } from './dependencies';
 
-export const productRouter = express.Router();
+export const productRouter = Router();
 
-productRouter.get("/:id", productController.run.bind(productController));
+productRouter.get(
+	'/products/:id',
+	productController.run.bind(productController)
+);
