@@ -1,5 +1,5 @@
 import { Product } from '../domain/Product';
-import { ProductRepository } from '../domain/ProductRepository';
+import { ProductRepository, ProductRepositoryCreate } from '../domain/ProductRepository';
 import { Product as ProductEntity } from './database/ProductEntity';
 
 export class ProductRepositoryImpl implements ProductRepository {
@@ -19,4 +19,17 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}
 		return '';
 	}
+    async createProduct(name: string, price: number): Promise<[Product, boolean]> {
+        const product = new Product({ name, price });
+        const values = product.dataValues
+        const response = await Product.findOrCreate({
+            where: { name },
+            defaults: {
+                name:values.name,
+
+                price:values.price
+            }
+        })
+        return response;
+    }
 }
