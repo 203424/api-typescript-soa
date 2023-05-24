@@ -8,7 +8,12 @@ export class CreateProductController {
 	async run(req: Request, res: Response) {
 		const body = req.body as Product
 
-        const product = await this.CreateProductUseCase.run(body.id, body.name, body.price);
-        return res.status(200).json(product);
+        const product = await this.CreateProductUseCase.run(body.name, body.price);
+        
+        if(product instanceof Product){
+          res.status(200).json(product);
+        }else{
+          res.status(500).json({message: product});
+        }
       }
     }

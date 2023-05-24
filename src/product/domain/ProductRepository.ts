@@ -4,10 +4,6 @@ export interface ProductRepository{
   getById(productId: number): Promise<Product | string>;
 }
 
-export interface ProductRepositoryGetAll{
-  getAll(): Promise<Product[]>; 
-}
-
 export interface ProductRepositoryCreate{
-  createProduct(name: string, price: number): Promise<[Product, boolean]>; 
+  createProduct(name: string, price: number): Promise<Product | string>; 
 }

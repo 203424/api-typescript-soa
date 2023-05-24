@@ -1,5 +1,8 @@
 import { Product } from '../domain/Product';
-import { ProductRepository, ProductRepositoryCreate } from '../domain/ProductRepository';
+import {
+	ProductRepository,
+	ProductRepositoryCreate
+} from '../domain/ProductRepository';
 import { Product as ProductEntity } from './database/ProductEntity';
 
 export class ProductRepositoryImpl implements ProductRepository {
@@ -11,7 +14,7 @@ export class ProductRepositoryImpl implements ProductRepository {
 			if (product) {
 				return new Product(product.id, product.name, product.price);
 			}
-            return 'No existe id'
+			return 'No existe id';
 		} catch (error) {
 			if (error instanceof Error) {
 				return error.message;
@@ -19,21 +22,29 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}
 		return '';
 	}
-
 }
-export class CreateProductRepositoryImpl implements ProductRepositoryCreate{
-        async createProduct(name: string, price: number): Promise<[Product, boolean]> {
-        const product = new ProductEntity();
-        const nameProduct = product.name
-        const priceProduct = product.name
-        const response = await ProductEntity.findOrCreate({
-            where: { name },
-            defaults: {
-                name:nameProduct,
+export class CreateProductRepositoryImpl implements ProductRepositoryCreate {
+	async createProduct(name: string, price: number): Promise<Product | string> {
+		try {
+            const existingProduct = await ProductEntity.findOneBy({name: name});
 
-                price: priceProduct
-            }
-        })
-        return response;
-    }
+            if (existingProduct) {
+				throw new Error('Ya existe un producto con ese nombre.');
+			}
+
+			const product = new ProductEntity();
+			product.name = name;
+			product.price = price;
+			const newProduct = await ProductEntity.save(product);
+
+			return new Product(newProduct.id, newProduct.name, newProduct.price);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(error.message);
+				return error.message;
+			}
+		}
+
+		return '';
+	}
 }

@@ -5,11 +5,13 @@ export class Product extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column({ unique: true })
 	name: string;
 
-	@Column({
-		default: 0
+	@Column('decimal', {
+		default: 0,
+		precision: 10,
+		scale: 2
 	})
 	price: number;
 }
