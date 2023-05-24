@@ -19,15 +19,19 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}
 		return '';
 	}
-    async createProduct(name: string, price: number): Promise<[Product, boolean]> {
-        const product = new Product({ name, price });
-        const values = product.dataValues
-        const response = await Product.findOrCreate({
+
+}
+export class CreateProductRepositoryImpl implements ProductRepositoryCreate{
+        async createProduct(name: string, price: number): Promise<[Product, boolean]> {
+        const product = new ProductEntity();
+        const nameProduct = product.name
+        const priceProduct = product.name
+        const response = await ProductEntity.findOrCreate({
             where: { name },
             defaults: {
-                name:values.name,
+                name:nameProduct,
 
-                price:values.price
+                price: priceProduct
             }
         })
         return response;
