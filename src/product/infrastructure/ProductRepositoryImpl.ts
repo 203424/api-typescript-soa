@@ -1,11 +1,8 @@
 import { Product } from '../domain/Product';
-import {
-	ProductRepository,
-	ProductRepositoryCreate
-} from '../domain/ProductRepository';
+import { ProductRepository } from '../domain/ProductRepository';
 import { Product as ProductEntity } from './database/ProductEntity';
 
-export class ProductRepositoryImpl implements ProductRepository {
+export class RepositoryImpl implements ProductRepository {
 	async getById(id: number): Promise<Product | string> {
 		try {
 			const product = await ProductEntity.findOneBy({ id: id });
@@ -22,13 +19,12 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}
 		return '';
 	}
-}
-export class CreateProductRepositoryImpl implements ProductRepositoryCreate {
+
 	async createProduct(name: string, price: number): Promise<Product | string> {
 		try {
-            const existingProduct = await ProductEntity.findOneBy({name: name});
+			const existingProduct = await ProductEntity.findOneBy({ name: name });
 
-            if (existingProduct) {
+			if (existingProduct) {
 				throw new Error('Ya existe un producto con ese nombre.');
 			}
 
@@ -45,6 +41,26 @@ export class CreateProductRepositoryImpl implements ProductRepositoryCreate {
 			}
 		}
 
+		return '';
+	}
+
+	async getAll(): Promise<Product[] | string> {
+		try {
+			const products = await ProductEntity.find();
+			let listProduct: Product[] = [];
+			if (products) {
+				products.forEach((product) => {
+					listProduct.push(
+						new Product(product.id, product.name, product.price)
+					);
+				});
+			}
+			return listProduct;
+		} catch (error) {
+			if (error instanceof Error) {
+				return error.message;
+			}
+		}
 		return '';
 	}
 }

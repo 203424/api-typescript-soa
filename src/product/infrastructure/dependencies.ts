@@ -1,18 +1,20 @@
 import { CreateProductUseCase } from '../application/CreateProductUseCase';
+import { GetAllUseCase } from '../application/GetAllUseCase';
 import { GetByIdUseCase } from '../application/GetByIdUseCase';
-import { ProductController } from './controllers/ProductController';
+
+import { GetByIdController } from './controllers/GetByIdController';
 import { CreateProductController } from './controllers/CreateProductController';
-import {
-	ProductRepositoryImpl,
-	CreateProductRepositoryImpl
-} from './ProductRepositoryImpl';
+import { GetAllController } from './controllers/GetAllController';
 
-const productRepository = new ProductRepositoryImpl();
-const createProductRepository = new CreateProductRepositoryImpl();
-const getByIdUseCase = new GetByIdUseCase(productRepository);
-const createProductUseCase = new CreateProductUseCase(createProductRepository);
+import { RepositoryImpl } from './ProductRepositoryImpl';
 
-export const productController = new ProductController(getByIdUseCase);
-export const createProductController = new CreateProductController(
-	createProductUseCase
-);
+const repositoryImpl = new RepositoryImpl();
+
+const getByIdUseCase = new GetByIdUseCase(repositoryImpl);
+const createProductUseCase = new CreateProductUseCase(repositoryImpl);
+const getAllUseCase = new GetAllUseCase(repositoryImpl);
+
+export const getByIdController = new GetByIdController(getByIdUseCase);
+export const createProductController = new CreateProductController(createProductUseCase);
+export const getAllProductController = new GetAllController(getAllUseCase);
+

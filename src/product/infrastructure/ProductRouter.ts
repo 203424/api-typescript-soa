@@ -1,14 +1,22 @@
 import { Router } from 'express';
 
-import { productController, createProductController } from './dependencies';
+import {
+	getByIdController,
+	createProductController,
+	getAllProductController
+} from './dependencies';
 
 export const productRouter = Router();
 
-productRouter.get(
-	'/products/:id',
-	productController.run.bind(productController)
-);
 productRouter.post(
-	'/products/',
+	'/products/add/',
 	createProductController.run.bind(createProductController)
+);
+productRouter.get(
+	'/products/list/',
+	getAllProductController.run.bind(getAllProductController)
+);
+productRouter.get(
+	'/products/list/:id',
+	getByIdController.run.bind(getByIdController)
 );

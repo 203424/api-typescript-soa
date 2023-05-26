@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { productRouter } from './src/product/infrastructure/ProductRouter';
 
 dotenv.config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT ?? 3000;
 
 async function main() {
 	try {
@@ -21,4 +21,4 @@ async function main() {
 	}
 }
 
-main();
+main().catch((e) => console.log(e));

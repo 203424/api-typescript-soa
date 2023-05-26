@@ -1,9 +1,7 @@
-import { Product } from "./Product";
+import { Product } from './Product';
 
-export interface ProductRepository{
+export interface ProductRepository {
   getById(productId: number): Promise<Product | string>;
-}
-
-export interface ProductRepositoryCreate{
-  createProduct(name: string, price: number): Promise<Product | string>; 
+  createProduct(name: string, price: number): Promise<Product | string>;
+  getAll(): Promise<Product[] | string>;
 }
